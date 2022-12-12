@@ -81,6 +81,24 @@ export default class TaskList extends React.Component {
         });
     }
 
+    cancelEdit = () => {
+        this.setState({
+            taskBeingEdited: null
+        });
+    }
+
+    deleteTask = (task) => {
+        const indexToDelete = this.state.tasks.findIndex((eachTask) => {
+            if (eachTask.id === task.id) return true;
+            else return false;
+        });
+        const modifiedTasks = [...this.state.tasks.slice(0, indexToDelete), 
+            ...this.state.tasks.slice(indexToDelete + 1)];
+        this.setState({
+            tasks: modifiedTasks
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -98,7 +116,7 @@ export default class TaskList extends React.Component {
                                     <input type="text" name="editedTaskName" value={this.state.editedTaskName}
                                     onChange={this.updateFormField}/>
                                     <button onClick={this.processEditTask}>Update</button>
-                                    <button>Cancel</button>
+                                    <button onClick={this.cancelEdit}>Cancel</button>
                                 </li>
                             );
                         }
@@ -111,7 +129,7 @@ export default class TaskList extends React.Component {
                                 <button onClick={() => {
                                     this.beginEditTask(eachTask)
                                 }}>Edit</button>
-                                <button>Delete</button>
+                                <button onClick={() => {this.deleteTask(eachTask)}}>Delete</button>
                             </li>
                             ); 
                         }
